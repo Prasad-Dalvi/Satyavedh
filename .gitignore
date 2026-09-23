@@ -1,0 +1,31 @@
+# Node and Python dependencies
+**/node_modules/
+**/venv/
+**/__pycache__/
+*.pyc
+
+# Environment and local data
+**/.env
+*.db
+
+# Uploads
+ImagePlag/server/uploads/*
+!ImagePlag/server/uploads/.gitkeep
+vidplag/uploads/videos/*
+!vidplag/uploads/videos/.gitkeep
+vidplag/uploads/frames/*
+!vidplag/uploads/frames/.gitkeep
+
+# Build output and logs
+**/dist/
+**/public/
+*.log
+
+# Local Git metadata backup
+ImagePlag/.git-local-backup/
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

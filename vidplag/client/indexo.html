@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VidPlag - Video AI Detection</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 16px; color: #222; }
+  h1 { font-size: 22px; }
+  p.sub { color: #666; margin-top: -8px; }
+  input[type=file] { margin: 12px 0; }
+  button { padding: 8px 16px; cursor: pointer; }
+  #status { margin-top: 16px; white-space: pre-wrap; font-family: monospace; font-size: 13px; background: #f5f5f5; padding: 12px; border-radius: 6px; display: none; }
+  #result { margin-top: 20px; display: none; }
+  table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+  th, td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; font-size: 13px; }
+  .verdict { font-size: 18px; font-weight: bold; margin-top: 10px; }
+  .AI-generated { color: #c0392b; }
+  .Real { color: #27ae60; }
+  .Unknown { color: #7f8c8d; }
+</style>
+</head>
+<body>
+  <h1>VidPlag</h1>
+  <p class="sub">Video extension of the imgplag image AI-detection project. Max 5 minutes per video.</p>
+
+  <input type="file" id="videoFile" accept="video/*">
+  <br>
+  <button id="uploadBtn">Upload &amp; Analyze</button>
+
+  <div id="status"></div>
+
+  <div id="result">
+    <h2>Result</h2>
+    <div id="verdict" class="verdict"></div>
+    <p id="summary"></p>
+    <table id="framesTable">
+      <thead>
+        <tr><th>#</th><th>Time range</th><th>Label</th><th>Confidence</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+<script>
+const API_BASE = "";
+
+const fileInput = document.getElementById("videoFile");
+const uploadBtn = document.getElementById("uploadBtn");
+const statusEl = document.getElementById("status");
+const resultEl = document.getElementById("result");
+const verdictEl = document.getElementById("verdict");
+const summaryEl = document.getElementById("summary");
+const framesBody = document.querySelector("#framesTable tbody");
+
+function showStatus(msg) {
+  statusEl.style.display = "block";
+  statusEl.textContent = msg;
+}
+
+uploadBtn.addEventListener("click", async () => {
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("Please choose a video file first.");
+    return;
+  }
+
+  resultEl.style.display = "none";
+  uploadBtn.disabled = true;
+
+  try {
+    showStatus("Uploading video...");
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const uploadRes = await fetch(`${API_BASE}/api/video/upload`, {
+      method: "POST",
+      body: formData,
+    });
+    const uploadData = await uploadRes.json();
+    if (!uploadRes.ok) throw new Error(uploadData.detail || "Upload failed");
+
+    showStatus(`Uploaded: ${uploadData.file_name} (${uploadData.duration_seconds}s)\nProcessing frames...`);
+
+    const processRes = await fetch(`${API_BASE}/api/video/${uploadData.video_id}/process`, {
+      method: "POST",
+    });
+    const data = await processRes.json();
+    if (!processRes.ok) throw new Error(data.detail || "Processing failed");
+
+    showStatus(`Done. Analyzed ${data.frames_analyzed} frames.`);
+    renderResult(data);
+  } catch (err) {
+    showStatus("Error: " + err.message);
+  } finally {
+    uploadBtn.disabled = false;
+  }
+});
+
+function renderResult(data) {
+  resultEl.style.display = "block";
+  verdictEl.textContent = data.final_decision + ` (confidence: ${data.confidence_score})`;
+  verdictEl.className = "verdict " + data.majority_label;
+
+  const counts = Object.entries(data.label_counts)
+    .map(([label, count]) => `${label}: ${count}`)
+    .join(", ");
+  summaryEl.textContent = `Label counts — ${counts}`;
+
+  framesBody.innerHTML = "";
+  data.frame_results.forEach(f => {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${f.frame_index}</td><td>${f.time_range}</td><td>${f.label}</td><td>${f.confidence}</td>`;
+    framesBody.appendChild(row);
+  });
+}
+</script>
+</body>
+</html>

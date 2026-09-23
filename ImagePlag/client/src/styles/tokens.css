@@ -1,0 +1,27 @@
+:root {
+  /* Color — "light table" palette: cool paper, deep ink, verdict green, evidence red, brass for data */
+  --color-paper: #E9EDF0;
+  --color-paper-raised: #F6F8F9;
+  --color-ink: #16202A;
+  --color-ink-soft: #4A5A66;
+  --color-hairline: #C9D2D6;
+  --color-verdict-clear: #2F6F63;
+  --color-verdict-flag: #B23A2E;
+  --color-brass: #8A6D3B;
+
+  /* Type */
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Source Serif 4", Georgia, serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  /* Scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+}

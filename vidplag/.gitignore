@@ -1,0 +1,9 @@
+venv/
+vidplag.db
+uploads/videos/*
+!uploads/videos/.gitkeep
+uploads/frames/*
+!uploads/frames/.gitkeep
+.env
+__pycache__/
+*.pyc

@@ -1,0 +1,123 @@
+.upload {
+  margin-bottom: var(--space-6);
+}
+
+.upload__holder {
+  position: relative;
+  height: 260px;
+  border: 1px solid var(--color-hairline);
+  background: var(--color-paper-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease;
+  overflow: hidden;
+}
+
+.upload__holder--dragging {
+  border-color: var(--color-verdict-clear);
+  background: #EEF4F2;
+}
+
+.upload__holder--filled {
+  background: var(--color-ink);
+}
+
+.upload__corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--color-ink-soft);
+  opacity: 0.5;
+}
+.upload__corner--tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.upload__corner--tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+.upload__corner--bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+.upload__corner--br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+.upload__placeholder {
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+
+.upload__placeholder-icon {
+  display: block;
+  font-size: 1.8rem;
+  margin-bottom: var(--space-2);
+  color: var(--color-hairline);
+}
+
+.upload__placeholder p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.upload__preview {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.upload__meta {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.upload__field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.upload__field-label {
+  font-size: 0.7rem;
+  color: var(--color-ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.upload__field input {
+  border: none;
+  border-bottom: 1px solid var(--color-hairline);
+  background: transparent;
+  padding: var(--space-2) 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-ink);
+}
+
+.upload__field input:focus {
+  border-bottom-color: var(--color-ink);
+  outline: none;
+}
+
+.upload__submit {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border: none;
+  padding: var(--space-3) var(--space-4);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-sm);
+  transition: background 150ms ease;
+}
+
+.upload__submit:hover:not(:disabled) {
+  background: var(--color-verdict-clear);
+}
+
+.upload__submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.upload__error {
+  margin-top: var(--space-2);
+  color: var(--color-verdict-flag);
+  font-size: 0.85rem;
+}
